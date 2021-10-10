@@ -31,11 +31,11 @@ public class AuthorizeController {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO("580dcac8de4966a31676","0cb78caa943e7e9c79e9ef0ccc3e50a8eb09877c",code,"http://localhost:8080/callback");
         String s = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(s);
-        if(githubUser!=null){
+        if(githubUser!=null&&githubUser.getLogin()!=null){
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setName(githubUser.getName());
+            user.setName(githubUser.getLogin());
             user.setAccountId(String.valueOf(githubUser.getId()));
             userMapper.insertUser(user);
             response.addCookie(new Cookie("token",token));
